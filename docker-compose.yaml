@@ -2,7 +2,7 @@ version: '2.2'
 services:
   tm-express:
     container_name: tm-express
-    image: 'cgpcsjcmp/tm-express-influx-api:latest'
+    image: 'cgpcsjcmp/tm-express-influx-api:armv7'
     networks:
       - express-influx-grafana
     environment:
