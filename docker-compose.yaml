@@ -1,0 +1,49 @@
+version: '2.2'
+services:
+  tm-express:
+    container_name: tm-express
+    image: 'cgpcsjcmp/tm-express-influx-api:latest'
+    networks:
+      - express-influx-grafana
+    environment:
+      - INFLUX_HOST=tm-influx
+      - INFLUX_PORT=8086
+      - PORT=80
+    ports:
+      - 5001:80
+    depends_on:
+      - tm-influx
+    mem_limit: 200m
+    restart: 'unless-stopped'
+  tm-grafana:
+    container_name: tm-grafana
+    image: grafana/grafana:latest
+    environment:
+      - INFLUX_URL=http://tm-influx:8086
+    networks:
+      - express-influx-grafana
+    ports:
+      - 5002:3000
+    volumes:
+      - 'tm-grafana-volume:/var/lib/grafana'
+      - ./configurations/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - tm-influx
+    mem_limit: 400m
+    restart: 'unless-stopped'
+  tm-influx:
+    container_name: tm-influx
+    image: 'influxdb:1.8.4-alpine'
+    networks:
+      - express-influx-grafana
+    volumes:
+      - 'tm-influx-volume:/var/lib/influx'
+      # - './configurations/influxdb:/etc/influx'
+    mem_limit: 600m
+    restart: 'unless-stopped'
+volumes:
+  tm-grafana-volume: null
+  tm-influx-volume: null
+networks:
+  express-influx-grafana:
+    external: false
