@@ -9,4 +9,4 @@ datasources:
     database: rp_info_db
     version: 1
     editable: true
-    isDefault: true
+    isDefault: false
