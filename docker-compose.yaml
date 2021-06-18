@@ -33,7 +33,7 @@ services:
     restart: 'unless-stopped'
   tm-influx:
     container_name: tm-influx
-    image: 'influxdb:1.8.4-alpine'
+    image: 'arm32v7/influxdb:1.8.4'
     networks:
       - express-influx-grafana
     volumes:
